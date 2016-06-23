@@ -63,6 +63,7 @@ public class KernelWakelockReader {
      * @return the updated data.
      */
     public final KernelWakelockStats readKernelWakelockStats(KernelWakelockStats staleStats) {
+        /*
         byte[] buffer = new byte[32*1024];
         int len;
         boolean wakeup_sources;
@@ -103,6 +104,9 @@ public class KernelWakelockReader {
             }
         }
         return parseProcWakelocks(buffer, len, wakeup_sources, staleStats);
+        */
+
+        return staleStats;
     }
 
     /**
