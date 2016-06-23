@@ -462,6 +462,7 @@ jint android_os_Process_getThreadScheduler(JNIEnv* env, jclass clazz,
 void android_os_Process_setThreadScheduler(JNIEnv* env, jclass clazz,
                                               jint tid, jint policy, jint pri)
 {
+#if 0
 // linux has sched_setscheduler(), others don't.
 #if defined(__linux__)
     struct sched_param param;
@@ -473,11 +474,13 @@ void android_os_Process_setThreadScheduler(JNIEnv* env, jclass clazz,
 #else
     signalExceptionForPriorityError(env, ENOSYS, tid);
 #endif
+#endif
 }
 
 void android_os_Process_setThreadPriority(JNIEnv* env, jobject clazz,
                                               jint pid, jint pri)
 {
+#if 0
 #if GUARD_THREAD_PRIORITY
     // if we're putting the current thread into the background, check the TLS
     // to make sure this thread isn't guarded.  If it is, raise an exception.
@@ -504,6 +507,7 @@ void android_os_Process_setThreadPriority(JNIEnv* env, jobject clazz,
 
     //ALOGI("Setting priority of %" PRId32 ": %" PRId32 ", getpriority returns %d\n",
     //     pid, pri, getpriority(PRIO_PROCESS, pid));
+#endif
 }
 
 void android_os_Process_setCallingThreadPriority(JNIEnv* env, jobject clazz,
@@ -527,6 +531,7 @@ jint android_os_Process_getThreadPriority(JNIEnv* env, jobject clazz,
 jboolean android_os_Process_setSwappiness(JNIEnv *env, jobject clazz,
                                           jint pid, jboolean is_increased)
 {
+#if 0
     char text[64];
 
     if (is_increased) {
@@ -546,6 +551,7 @@ jboolean android_os_Process_setSwappiness(JNIEnv *env, jobject clazz,
         write(fd, text, strlen(text));
         close(fd);
     }
+#endif
 
     return true;
 }

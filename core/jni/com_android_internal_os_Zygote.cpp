@@ -218,13 +218,16 @@ static void SetRLimits(JNIEnv* env, jobjectArray javaRlimits) {
 extern "C" int gMallocLeakZygoteChild;
 
 static void EnableKeepCapabilities(JNIEnv* env) {
+#if 0
   int rc = prctl(PR_SET_KEEPCAPS, 1, 0, 0, 0);
   if (rc == -1) {
     RuntimeAbort(env, __LINE__, "prctl(PR_SET_KEEPCAPS) failed");
   }
+#endif
 }
 
 static void DropCapabilitiesBoundingSet(JNIEnv* env) {
+#if 0
   for (int i = 0; prctl(PR_CAPBSET_READ, i, 0, 0, 0) >= 0; i++) {
     int rc = prctl(PR_CAPBSET_DROP, i, 0, 0, 0);
     if (rc == -1) {
@@ -236,9 +239,11 @@ static void DropCapabilitiesBoundingSet(JNIEnv* env) {
       }
     }
   }
+#endif
 }
 
 static void SetCapabilities(JNIEnv* env, int64_t permitted, int64_t effective) {
+#if 0
   __user_cap_header_struct capheader;
   memset(&capheader, 0, sizeof(capheader));
   capheader.version = _LINUX_CAPABILITY_VERSION_3;
@@ -255,14 +260,17 @@ static void SetCapabilities(JNIEnv* env, int64_t permitted, int64_t effective) {
     ALOGE("capset(%" PRId64 ", %" PRId64 ") failed", permitted, effective);
     RuntimeAbort(env, __LINE__, "capset failed");
   }
+#endif
 }
 
 static void SetSchedulerPolicy(JNIEnv* env) {
+#if 0
   errno = -set_sched_policy(0, SP_DEFAULT);
   if (errno != 0) {
     ALOGE("set_sched_policy(0, SP_DEFAULT) failed");
     RuntimeAbort(env, __LINE__, "set_sched_policy(0, SP_DEFAULT) failed");
   }
+#endif
 }
 
 static int UnmountTree(const char* path) {
