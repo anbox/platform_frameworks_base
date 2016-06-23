@@ -9297,6 +9297,7 @@ public class BatteryStatsImpl extends BatteryStats {
         }
 
         // Record whether we've seen a non-zero time (for debugging b/22716723).
+        /*/
         if (wakelockStats.isEmpty()) {
             Slog.wtf(TAG, "All kernel wakelocks had time of zero");
         }
@@ -9305,6 +9306,7 @@ public class BatteryStatsImpl extends BatteryStats {
             Slog.wtf(TAG, "All kernel wakelocks were set stale. new version=" +
                     wakelockStats.kernelWakelockVersion);
         }
+        */
     }
 
     // We use an anonymous class to access these variables,
