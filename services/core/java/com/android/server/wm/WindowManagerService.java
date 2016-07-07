@@ -6051,7 +6051,7 @@ public class WindowManagerService extends IWindowManager.Stub
                 try {
                     IBinder surfaceFlinger = ServiceManager.getService("SurfaceFlinger");
                     if (surfaceFlinger != null) {
-                        //Slog.i(TAG_WM, "******* TELLING SURFACE FLINGER WE ARE BOOTED!");
+                        Slog.i(TAG, "******* TELLING SURFACE FLINGER WE ARE BOOTED!");
                         Parcel data = Parcel.obtain();
                         data.writeInterfaceToken("android.ui.ISurfaceComposer");
                         surfaceFlinger.transact(IBinder.FIRST_CALL_TRANSACTION, // BOOT_FINISHED
@@ -6060,6 +6060,19 @@ public class WindowManagerService extends IWindowManager.Stub
                     }
                 } catch (RemoteException ex) {
                     Slog.e(TAG_WM, "Boot completed: SurfaceFlinger is dead!");
+                }
+                try {
+                    IBinder anbox = ServiceManager.getService("anbox.PlatformService");
+                    if (anbox != null) {
+                        Slog.i(TAG, "********* TELLING ANBOX WE ARE BOOTED!");
+                        Parcel data = Parcel.obtain();
+                        data.writeInterfaceToken("anbox.IPlatformService");
+                        anbox.transact(IBinder.FIRST_CALL_TRANSACTION, // BOOT_FINISHED
+                                       data, null, 0);
+                        data.recycle();
+                    }
+                } catch (RemoteException ex) {
+                    Slog.e(TAG, "Boot completed: Anboxd is dead!");
                 }
                 mBootAnimationStopped = true;
             }
