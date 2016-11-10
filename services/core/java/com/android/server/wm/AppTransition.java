@@ -1587,7 +1587,7 @@ public class AppTransition implements Dump {
                     + " transit=" + appTransitionToString(transit) + " isEntrance=" + enter
                     + " Callers=" + Debug.getCallers(3));
         }
-        return a;
+        return null;
     }
 
     int getAppStackClipMode() {
