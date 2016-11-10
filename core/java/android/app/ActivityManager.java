@@ -535,7 +535,7 @@ public class ActivityManager {
          * their border.
          */
         public static boolean hasWindowShadow(int stackId) {
-            return stackId == FREEFORM_WORKSPACE_STACK_ID || stackId == PINNED_STACK_ID;
+            return stackId == PINNED_STACK_ID;
         }
 
         /**
