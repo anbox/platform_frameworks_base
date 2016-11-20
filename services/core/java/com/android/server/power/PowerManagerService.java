@@ -744,8 +744,7 @@ public final class PowerManagerService extends SystemService
         mSleepTimeoutSetting = Settings.Secure.getIntForUser(resolver,
                 Settings.Secure.SLEEP_TIMEOUT, DEFAULT_SLEEP_TIMEOUT,
                 UserHandle.USER_CURRENT);
-        mStayOnWhilePluggedInSetting = Settings.Global.getInt(resolver,
-                Settings.Global.STAY_ON_WHILE_PLUGGED_IN, BatteryManager.BATTERY_PLUGGED_AC);
+        mStayOnWhilePluggedInSetting = 1;
         mTheaterModeEnabled = Settings.Global.getInt(mContext.getContentResolver(),
                 Settings.Global.THEATER_MODE_ON, 0) == 1;
 
@@ -1565,9 +1564,8 @@ public final class PowerManagerService extends SystemService
     private void updateStayOnLocked(int dirty) {
         if ((dirty & (DIRTY_BATTERY_STATE | DIRTY_SETTINGS)) != 0) {
             final boolean wasStayOn = mStayOn;
-            if (mStayOnWhilePluggedInSetting != 0
-                    && !isMaximumScreenOffTimeoutFromDeviceAdminEnforcedLocked()) {
-                mStayOn = mBatteryManagerInternal.isPowered(mStayOnWhilePluggedInSetting);
+            if (mStayOnWhilePluggedInSetting != 0) {
+                mStayOn = true;
             } else {
                 mStayOn = false;
             }
