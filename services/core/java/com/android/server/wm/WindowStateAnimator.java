@@ -746,9 +746,14 @@ class WindowStateAnimator {
                 flags |= SurfaceControl.OPAQUE;
             }
 
+            String name = attrs.getTitle().toString();
+            Task task = mWin.getTask();
+            if (task != null) {
+                name = String.format("org.anbox.surface.%d", task.mTaskId);
+            }
+
             mSurfaceController = new WindowSurfaceController(mSession.mSurfaceSession,
-                    attrs.getTitle().toString(),
-                    width, height, format, flags, this);
+                    name, width, height, format, flags, this);
 
             w.setHasSurface(true);
 
