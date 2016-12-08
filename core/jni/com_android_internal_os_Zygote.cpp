@@ -239,16 +239,13 @@ static void SetRLimits(JNIEnv* env, jobjectArray javaRlimits) {
 extern "C" int gMallocLeakZygoteChild;
 
 static void EnableKeepCapabilities(JNIEnv* env) {
-#if 0
   int rc = prctl(PR_SET_KEEPCAPS, 1, 0, 0, 0);
   if (rc == -1) {
     RuntimeAbort(env, __LINE__, "prctl(PR_SET_KEEPCAPS) failed");
   }
-#endif
 }
 
 static void DropCapabilitiesBoundingSet(JNIEnv* env) {
-#if 0
   for (int i = 0; prctl(PR_CAPBSET_READ, i, 0, 0, 0) >= 0; i++) {
     int rc = prctl(PR_CAPBSET_DROP, i, 0, 0, 0);
     if (rc == -1) {
@@ -261,7 +258,6 @@ static void DropCapabilitiesBoundingSet(JNIEnv* env) {
       }
     }
   }
-#endif
 }
 
 static void SetInheritable(JNIEnv* env, uint64_t inheritable) {
