@@ -5093,6 +5093,7 @@ final class ActivityStack {
         if (mode == REMOVE_TASK_MODE_DESTROYING) {
             mStackSupervisor.removeLockedTaskLocked(task);
             mWindowManager.removeTask(task.taskId);
+            mService.mPlatformServiceProxy.notifyTaskRemoved(task.taskId);
             if (!StackId.persistTaskBounds(mStackId)) {
                 // Reset current bounds for task whose bounds shouldn't be persisted so it uses
                 // default configuration the next time it launches.
