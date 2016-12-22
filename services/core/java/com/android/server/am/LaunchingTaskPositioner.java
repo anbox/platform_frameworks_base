@@ -95,8 +95,8 @@ class LaunchingTaskPositioner {
         int height = mAvailableRect.height();
         mDefaultFreeformStartX = mAvailableRect.left + width / MARGIN_SIZE_DENOMINATOR;
         mDefaultFreeformStartY = mAvailableRect.top + height / MARGIN_SIZE_DENOMINATOR;
-        mDefaultFreeformWidth = width / WINDOW_SIZE_DENOMINATOR;
-        mDefaultFreeformHeight = height / WINDOW_SIZE_DENOMINATOR;
+        mDefaultFreeformWidth = 1024;
+        mDefaultFreeformHeight = 768;
         mDefaultFreeformStepHorizontal = Math.max(width / STEP_DENOMINATOR, MINIMAL_STEP);
         mDefaultFreeformStepVertical = Math.max(height / STEP_DENOMINATOR, MINIMAL_STEP);
         mDefaultStartBoundsConfigurationSet = true;
