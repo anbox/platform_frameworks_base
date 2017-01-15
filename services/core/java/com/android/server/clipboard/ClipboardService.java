@@ -47,6 +47,8 @@ import android.os.UserManager;
 import android.util.Slog;
 import android.util.SparseArray;
 
+import com.android.server.wm.AnboxPlatformServiceProxy;
+
 import java.util.HashSet;
 import java.util.List;
 
@@ -63,6 +65,8 @@ public class ClipboardService extends IClipboard.Stub {
     private final PackageManager mPm;
     private final AppOpsManager mAppOps;
     private final IBinder mPermissionOwner;
+
+    private AnboxPlatformServiceProxy mPlatformServiceProxy;
 
     private class ListenerInfo {
         final int mUid;
@@ -120,6 +124,9 @@ public class ClipboardService extends IClipboard.Stub {
                 }
             }
         }, userFilter);
+
+        // This will setup the proxy instance we use to talk with the Anbox host side
+        mPlatformServiceProxy = new AnboxPlatformServiceProxy(null, null);
     }
 
     @Override
@@ -172,6 +179,7 @@ public class ClipboardService extends IClipboard.Stub {
             PerUserClipboard clipboard = getClipboard(userId);
             revokeUris(clipboard);
             setPrimaryClipInternal(clipboard, clip);
+            mPlatformServiceProxy.sendClipboardData(mContext, clip);
             List<UserInfo> related = getRelatedProfiles(userId);
             if (related != null) {
                 int size = related.size();
@@ -251,7 +259,7 @@ public class ClipboardService extends IClipboard.Stub {
             Binder.restoreCallingIdentity(ident);
         }
     }
-    
+
     public ClipData getPrimaryClip(String pkg) {
         synchronized (this) {
             if (mAppOps.noteOp(AppOpsManager.OP_READ_CLIPBOARD, Binder.getCallingUid(),
@@ -259,6 +267,9 @@ public class ClipboardService extends IClipboard.Stub {
                 return null;
             }
             addActiveOwnerLocked(Binder.getCallingUid(), pkg);
+            ClipData data = mPlatformServiceProxy.updateClipboardIfNecessary(mContext, getClipboard().primaryClip);
+            if (data != null)
+                setPrimaryClipInternal(getClipboard(), data);
             return getClipboard().primaryClip;
         }
     }
@@ -280,6 +291,9 @@ public class ClipboardService extends IClipboard.Stub {
                     callingPackage) != AppOpsManager.MODE_ALLOWED) {
                 return false;
             }
+            ClipData data = mPlatformServiceProxy.updateClipboardIfNecessary(mContext, getClipboard().primaryClip);
+            if (data != null)
+                setPrimaryClipInternal(getClipboard(), data);
             return getClipboard().primaryClip != null;
         }
     }
