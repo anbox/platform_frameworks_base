@@ -361,6 +361,13 @@ public class AssetAtlasService extends IAssetAtlas.Stub {
 
         // Don't bother with an extra thread if there's only one processor
         int cpuCount = Runtime.getRuntime().availableProcessors();
+        // ANBOX: Use an upper limit of 8 cores here as otherwise the compute
+        // worker runs into trouble and will come back with no results. See
+        // https://github.com/anbox/anbox/issues/235 for more details.
+        if (cpuCount > 8) {
+            cpuCount = 8;
+        }
+
         if (cpuCount == 1) {
             new ComputeWorker(MIN_SIZE, MAX_SIZE, STEP, bitmaps, pixelCount, results, null).run();
         } else {
