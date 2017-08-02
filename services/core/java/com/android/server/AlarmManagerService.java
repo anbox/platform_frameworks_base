@@ -2623,7 +2623,7 @@ class AlarmManagerService extends SystemService {
                         Alarm alarm = triggerList.get(i);
                         try {
                             alarm.operation.send();
-                        } catch (PendingIntent.CanceledException e) {
+                        } catch (Exception e) {
                             if (alarm.repeatInterval > 0) {
                                 // This IntentSender is no longer valid, but this
                                 // is a repeating alarm, so toss the hoser.
