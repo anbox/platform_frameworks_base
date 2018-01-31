@@ -111,6 +111,12 @@ public final class AnboxPlatformServiceProxy {
             data.writeInt(0);
             data.writeInt(0);
         }
+        /*
+         * Update mRotation value from surface flinger as is,
+         * 0 (0 degree), 1 (90 degree), 2 (180 degree), 3 (270 degree)
+         * to process at host side
+         */
+        data.writeInt(mWm.mRotation);
     }
 
     /*
