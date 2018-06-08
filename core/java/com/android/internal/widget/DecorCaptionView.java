@@ -342,7 +342,7 @@ public class DecorCaptionView extends ViewGroup implements View.OnTouchListener,
      **/
     private void updateCaptionVisibility() {
         // Don't show the caption if the window has e.g. entered full screen.
-        boolean invisible = /* isFillingScreen() || !mShow */ true;
+        boolean invisible = isFillingScreen() || !mShow;
         mCaption.setVisibility(invisible ? GONE : VISIBLE);
         mCaption.setOnTouchListener(this);
     }
