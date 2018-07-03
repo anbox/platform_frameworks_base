@@ -155,6 +155,11 @@ public final class BatteryService extends SystemService {
         mLed = new Led(context, getLocalService(LightsManager.class));
         mBatteryStats = BatteryStatsService.getService();
 
+        // Make sure we have something here to avoid boot crash
+        mBatteryProps = new BatteryProperties();
+        mBatteryProps.chargerUsbOnline = true;
+        mBatteryProps.batteryLevel = 100;
+
         mCriticalBatteryLevel = mContext.getResources().getInteger(
                 com.android.internal.R.integer.config_criticalBatteryWarningLevel);
         mLowBatteryWarningLevel = mContext.getResources().getInteger(
@@ -310,12 +315,14 @@ public final class BatteryService extends SystemService {
 
     private void update(BatteryProperties props) {
         synchronized (mLock) {
-            if (!mUpdatesStopped) {
-                mBatteryProps = props;
-                // Process the new values.
-                processValuesLocked(false);
-            } else {
-                mLastBatteryProps.set(props);
+            if (props != null) {
+                if (!mUpdatesStopped) {
+                    mBatteryProps = props;
+                    // Process the new values.
+                    processValuesLocked(false);
+                } else {
+                    mLastBatteryProps.set(props);
+                }
             }
         }
     }

@@ -499,7 +499,26 @@ public final class SystemServer {
      */
     private void startCoreServices() {
         // Tracks the battery level.  Requires LightService.
-        mSystemServiceManager.startService(BatteryService.class);
+        // ANBOX. We are too fast some times and a race condition appears while
+        // creating the BatteryService. Retry.
+        boolean created = false;
+        final int RETRY_TIME_MS = 20;
+        final int MAX_WAIT_TIME_MS = 400;
+        int retry = 0;
+        do {
+            try {
+                mSystemServiceManager.startService(BatteryService.class);
+                created = true;
+            } catch (RuntimeException ex) {
+                Slog.i(TAG, "Error when trying to start BatteryService");
+                if (++retry == MAX_WAIT_TIME_MS/RETRY_TIME_MS) {
+                    throw ex;
+                }
+                try {
+                    Thread.sleep(RETRY_TIME_MS);  // in ms
+                } catch (InterruptedException ex2) {}
+            }
+        } while(!created);
 
         // Tracks application usage stats.
         mSystemServiceManager.startService(UsageStatsService.class);
