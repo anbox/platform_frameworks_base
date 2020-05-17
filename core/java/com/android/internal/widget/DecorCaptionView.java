@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.RemoteException;
+import android.os.SystemProperties;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -98,6 +99,8 @@ public class DecorCaptionView extends ViewGroup implements View.OnTouchListener,
     private boolean mCheckForDragging;
     private int mDragSlop;
 
+    private boolean mDecorationHide = false;
+
     // Fields for detecting and intercepting click events on close/maximize.
     private ArrayList<View> mTouchDispatchList = new ArrayList<>(2);
     // We use the gesture detector to detect clicks on close/maximize buttons and to be consistent
@@ -125,6 +128,8 @@ public class DecorCaptionView extends ViewGroup implements View.OnTouchListener,
     private void init(Context context) {
         mDragSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         mGestureDetector = new GestureDetector(context, this);
+
+        mDecorationHide = SystemProperties.getBoolean("ro.anbox.no_decorations", false);
     }
 
     @Override
@@ -342,7 +347,7 @@ public class DecorCaptionView extends ViewGroup implements View.OnTouchListener,
      **/
     private void updateCaptionVisibility() {
         // Don't show the caption if the window has e.g. entered full screen.
-        boolean invisible = isFillingScreen() || !mShow;
+        boolean invisible = isFillingScreen() || !mShow || mDecorationHide;
         mCaption.setVisibility(invisible ? GONE : VISIBLE);
         mCaption.setOnTouchListener(this);
     }
