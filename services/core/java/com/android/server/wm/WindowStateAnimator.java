@@ -1711,10 +1711,10 @@ class WindowStateAnimator {
     }
 
     void setSecureLocked(boolean isSecure) {
-        if (mSurfaceController == null) {
-            return;
-        }
-        mSurfaceController.setSecure(isSecure);
+//        if (mSurfaceController == null) {
+//            return;
+//        }
+//        mSurfaceController.setSecure(isSecure);
     }
 
     // This must be called while inside a transaction.
