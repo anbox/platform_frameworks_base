@@ -2332,20 +2332,21 @@ public class WindowManagerService extends IWindowManager.Stub
      * Returns whether screen capture is disabled for all windows of a specific user.
      */
     boolean isScreenCaptureDisabledLocked(int userId) {
-        Boolean disabled = mScreenCaptureDisabled.get(userId);
-        if (disabled == null) {
-            return false;
-        }
-        return disabled;
+//        Boolean disabled = mScreenCaptureDisabled.get(userId);
+//        if (disabled == null) {
+//            return false;
+//        }
+//        return disabled;
+	return false;
     }
 
     boolean isSecureLocked(WindowState w) {
-        if ((w.mAttrs.flags&WindowManager.LayoutParams.FLAG_SECURE) != 0) {
-            return true;
-        }
-        if (isScreenCaptureDisabledLocked(UserHandle.getUserId(w.mOwnerUid))) {
-            return true;
-        }
+//        if ((w.mAttrs.flags&WindowManager.LayoutParams.FLAG_SECURE) != 0) {
+//            return true;
+//        }
+//        if (isScreenCaptureDisabledLocked(UserHandle.getUserId(w.mOwnerUid))) {
+//            return true;
+//        }
         return false;
     }
 
@@ -2354,7 +2355,7 @@ public class WindowManagerService extends IWindowManager.Stub
      */
     @Override
     public void setScreenCaptureDisabled(int userId, boolean disabled) {
-        int callingUid = Binder.getCallingUid();
+/*        int callingUid = Binder.getCallingUid();
         if (callingUid != Process.SYSTEM_UID) {
             throw new SecurityException("Only system can call setScreenCaptureDisabled.");
         }
@@ -2371,7 +2372,7 @@ public class WindowManagerService extends IWindowManager.Stub
                     }
                 }
             }
-        }
+        } */
     }
 
     private void setupWindowForRemoveOnExit(WindowState win) {
